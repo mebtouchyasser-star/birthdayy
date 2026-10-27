@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     CUSTOMIZATION AREA - EDIT EVERYTHING IN THIS BLOCK
+     Keep the quotes "" and commas , when you edit.
+     ============================================================ -->
+<script>
+const CONFIG = {
+  herName: "HER_NAME",
+  myName: "MY_NAME",
+
+  // Your song file. Put it in the "audio" folder and match the name here.
+  audioFile: "audio/song.mp3",
+  trackTitle: "I Will Always Love You",
+
+  songIntro: "Before you read anything, let this song say what my heart sometimes cannot.",
+  birthdayMessage: "Happy Birthday, HER_NAME. Today is yours, and so is every part of my heart.",
+  flowersMessage: "If I could give you anything in the world, I would give you the ability to see yourself through my eyes.",
+
+  // Blank lines (\n\n) start a new paragraph.
+  loveLetter: "My dearest HER_NAME,\n\nYOUR_PERSONAL_MESSAGE - write your own words here. Tell her what she means to you, what you are grateful for, and what you hope for together.\n\nForever yours,\nMY_NAME",
+
+  // Put photos in the "images" folder and match the file names here.
+  photos: [
+    { file: "photo1.jpg", caption: "YOUR_CAPTION_1" },
+    { file: "photo2.jpg", caption: "YOUR_CAPTION_2" },
+    { file: "photo3.jpg", caption: "YOUR_CAPTION_3" },
+    { file: "photo4.jpg", caption: "YOUR_CAPTION_4" }
+  ],
+
+  reasons: [
+    "REASON_1 - something about her that you love.",
+    "REASON_2 - a moment she made you feel at home.",
+    "REASON_3 - how she makes ordinary days beautiful.",
+    "REASON_4 - something only you know about her.",
+    "REASON_5 - what you admire most in her."
+  ],
+
+  secretMessage: "YOUR_SECRET_MESSAGE - a little something only she gets to read.",
+  cakeWish: "May this year be as warm and beautiful as you are. Make a wish, HER_NAME.",
+  finalMessage: "Happy Birthday, my love. If I had to choose again, I would still choose you."
+};
+</script>
+<!-- ============================ END CUSTOMIZATION ============================ -->
+
+<style>
+:root{--wine:#4a0d1c;--cherry:#1c0509;--black:#0d0205;--blush:#f2c4cc;--ivory:#f8f0e3;--gold:#c9a45c;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at top,var(--wine),var(--cherry) 55%,var(--black));background-attachment:fixed;
+  color:var(--ivory);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+section{min-height:100vh;min-height:100svh;padding:5rem 1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+h1,h2{font-family:var(--serif);font-weight:400;line-height:1.2;color:var(--ivory)}
+h1{font-size:clamp(2.2rem,7vw,4.5rem);font-style:italic}
+h2{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:1.2rem}
+.eyebrow{letter-spacing:.35em;text-transform:uppercase;font-size:.72rem;color:var(--gold);margin-bottom:1.2rem}
+.lead{font-family:var(--serif);font-style:italic;font-size:clamp(1.2rem,3vw,1.7rem);max-width:36rem;color:var(--blush)}
+.btn{margin-top:2rem;padding:.9rem 2.2rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:40px;
+  font:400 .8rem var(--sans);letter-spacing:.25em;text-transform:uppercase;cursor:pointer;transition:.4s}
+.btn:hover,.btn:focus-visible{background:var(--gold);color:var(--cherry);box-shadow:0 0 30px rgba(201,164,92,.5);outline:none}
+.glow{text-shadow:0 0 30px rgba(242,196,204,.35)}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1.2s ease,transform 1.2s ease}
+.reveal.in{opacity:1;transform:none}
+#world{display:none}#world.open{display:block;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* petals */
+#petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.petal{position:absolute;top:-5vh;width:12px;height:16px;background:radial-gradient(circle at 30% 30%,#f7d2d8,#b3354f);
+  border-radius:80% 0 80% 0;opacity:.7;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+/* 1 song */
+.player{width:min(92vw,640px);aspect-ratio:16/9;margin-top:2rem;border:1px solid rgba(201,164,92,.5);border-radius:6px;
+  box-shadow:0 20px 80px rgba(0,0,0,.7),0 0 60px rgba(179,53,79,.25);background:#000 center/cover;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.player.audio{aspect-ratio:auto;flex-direction:column;padding:2.2rem 1.5rem;background:linear-gradient(160deg,#3a0a17,#12030a)}
+.disc{width:120px;height:120px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle,var(--gold) 0 6px,#12030a 7px 14px,#6e1829 15px 40%,#2a0710 41%);box-shadow:0 0 40px rgba(179,53,79,.45)}
+.disc.spin{animation:spin 8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.track{font:italic 1.4rem var(--serif);color:var(--blush);margin-top:1rem}
+.bar{width:80%;height:3px;background:rgba(255,255,255,.15);margin-top:1.4rem;border-radius:2px}.bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:2px}
+.note{font-size:.85rem;opacity:.7;max-width:30rem;margin-top:1rem}
+.note a{color:var(--gold)}
+
+/* 3 flowers */
+#roses{width:min(90vw,460px);height:auto;margin:1rem 0;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+
+/* 4 envelope */
+.env{position:relative;width:min(88vw,380px);height:min(58vw,250px);margin:3rem 0 1rem;cursor:pointer;perspective:900px}
+.env .back,.env .front{position:absolute;inset:0;border-radius:4px}
+.env .back{background:#7a1e32}
+.env .front{background:linear-gradient(135deg,#8c2a3e 0 50%,#6e1829 50%);clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:3}
+.env .flap{position:absolute;left:0;right:0;top:0;height:55%;background:#9a3045;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .9s ease,z-index 0s .45s;z-index:4}
+.env.open .flap{transform:rotateX(180deg);z-index:1}
+.seal{position:absolute;left:50%;top:44%;width:56px;height:56px;margin:-28px;border-radius:50%;z-index:5;background:radial-gradient(circle at 35% 30%,#d9506b,#7d0f26);
+  box-shadow:0 4px 12px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font:italic 1.5rem var(--serif);color:#f4c2cb;transition:.5s}
+.env.open .seal{opacity:0;transform:scale(.4)}
+.letter{position:absolute;left:6%;right:6%;top:6%;bottom:6%;background:var(--ivory);z-index:2;transition:transform 1s .5s ease;border-radius:2px}
+.env.open .letter{transform:translateY(-8%)}
+#letterPaper{display:none;width:min(92vw,560px);background:linear-gradient(var(--ivory),#efe2cd);color:#3a1018;padding:clamp(1.6rem,5vw,3.2rem);
+  border-radius:3px;box-shadow:0 25px 70px rgba(0,0,0,.6);font-family:var(--serif);font-size:clamp(1.15rem,2.6vw,1.4rem);text-align:left;line-height:1.8;margin-top:1.5rem}
+#letterPaper.show{display:block;animation:fade 1.5s}
+#letterPaper p{margin-bottom:1em}
+
+/* 5 gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;width:min(1000px,100%);margin-top:2rem}
+.photo{background:var(--ivory);padding:.7rem .7rem 1rem;color:#3a1018;box-shadow:0 15px 40px rgba(0,0,0,.55);transition:.5s;font-family:var(--serif);font-style:italic}
+.photo:nth-child(odd){transform:rotate(-2.5deg)}.photo:nth-child(even){transform:rotate(2deg) translateY(14px)}
+.photo:hover{transform:rotate(0) scale(1.05);z-index:2}
+.photo .img{aspect-ratio:4/5;background:#d9c7b0 center/cover;display:flex;align-items:center;justify-content:center;font:300 .8rem var(--sans);color:#8a6f5a;padding:1rem}
+.photo p{margin-top:.7rem;font-size:1.1rem}
+
+/* 6 reasons */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem;width:min(1000px,100%);margin-top:1.5rem}
+.card{padding:1.8rem 1.4rem;border:1px solid rgba(201,164,92,.45);background:rgba(255,255,255,.04);backdrop-filter:blur(4px);border-radius:4px;
+  font-family:var(--serif);font-size:1.25rem;opacity:0;transform:translateY(24px) scale(.97);animation:cardIn 1s forwards}
+.card b{display:block;color:var(--gold);font:400 .7rem var(--sans);letter-spacing:.3em;margin-bottom:.6rem}
+@keyframes cardIn{to{opacity:1;transform:none}}
+
+/* 7 secret */
+.scratch{position:relative;width:min(90vw,420px);height:170px;margin-top:1.5rem;border-radius:6px;overflow:hidden;box-shadow:0 15px 50px rgba(0,0,0,.6)}
+.scratch .msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:var(--ivory);color:#3a1018;font:italic 1.3rem/1.4 var(--serif)}
+.scratch canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;transition:opacity 1s}
+
+/* 8 cake */
+.cake{position:relative;width:260px;margin:2rem auto 0}
+.cake .tier{margin:0 auto;border-radius:10px 10px 4px 4px;position:relative}
+.t1{width:100%;height:80px;background:linear-gradient(#f6e6dc,#e3c1b4)}
+.t2{width:76%;height:66px;background:linear-gradient(#9c2740,#5e0f21)}
+.t1:before,.t2:before{content:"";position:absolute;left:0;right:0;top:0;height:16px;background:#fff7ef;border-radius:10px 10px 50% 50%/10px 10px 14px 14px}
+.plate{width:310px;max-width:90vw;height:12px;background:var(--gold);border-radius:50%;margin:-2px auto 0;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.candles{display:flex;justify-content:center;gap:26px;height:64px;align-items:flex-end;margin-bottom:-2px}
+.candle{width:12px;height:38px;background:linear-gradient(90deg,#f6e6dc,#fff,#e3c1b4);border-radius:2px;position:relative;cursor:pointer;border:0;padding:0}
+.candle:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
+.flame{position:absolute;left:50%;top:-24px;width:14px;height:24px;margin-left:-7px;border-radius:50% 50% 50% 50%/65% 65% 35% 35%;
+  background:radial-gradient(circle at 50% 75%,#fff6c8,#ffb43a 55%,rgba(255,120,30,.3));box-shadow:0 0 25px 8px rgba(255,170,60,.5);animation:flick .15s infinite alternate;transform-origin:50% 100%}
+@keyframes flick{to{transform:scale(.92,1.08) rotate(3deg)}}
+.candle.out .flame{display:none}
+.candle.out:after{content:"";position:absolute;left:5px;top:-34px;width:3px;height:30px;background:rgba(255,255,255,.35);filter:blur(3px);animation:smoke 2s forwards}
+@keyframes smoke{to{transform:translateY(-30px);opacity:0}}
+#wish{opacity:0;transition:opacity 1.6s;margin-top:2rem;max-width:30rem;font:italic clamp(1.3rem,3vw,1.8rem) var(--serif);color:var(--blush)}
+#wish.show{opacity:1}
+
+/* 9 final */
+#final{overflow:hidden}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--ivory);animation:tw 3s infinite ease-in-out}
+@keyframes tw{50%{opacity:.1;transform:scale(.5)}}
+#final h1,#final p{position:relative;z-index:2}
+.sig{font:italic 1.5rem var(--serif);color:var(--gold);margin-top:2rem}
+
+#musicBtn{position:fixed;right:14px;bottom:14px;z-index:20;display:none;padding:.6rem 1rem;font-size:.7rem;margin:0;background:rgba(13,2,5,.8)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}#petals{display:none}}
+</style>
+</head>
+<body>
+<div id="petals" aria-hidden="true"></div>
+
+<!-- SECTION 1: THE SONG -->
+<section id="song">
+  <p class="eyebrow">For HER_NAME</p>
+  <p class="lead glow" id="songIntro"></p>
+  <div class="player audio"><audio id="audio" preload="metadata" loop></audio><div class="disc" id="disc"></div><p class="track" id="track"></p><button class="btn" id="playBtn" style="margin:1rem 0 0">Play Our Moment</button><div class="bar"><i id="barFill"></i></div></div>
+  <p class="note" id="audioNote">Browsers block music from starting on their own, so please press Play.</p>
+</section>
+
+<!-- SECTION 2: OPENING -->
+<section id="opening">
+  <p class="eyebrow">Today</p>
+  <h1 class="glow" id="bday"></h1>
+  <button class="btn" id="enterBtn">Enter My Little World</button>
+</section>
+
+<main id="world">
+  <!-- SECTION 3: FLOWERS -->
+  <section id="flowers">
+    <svg id="roses" viewBox="0 0 400 420" aria-label="A bouquet of roses"></svg>
+    <p class="lead reveal" id="flowerMsg"></p>
+  </section>
+
+  <!-- SECTION 4: LOVE LETTER -->
+  <section id="letter">
+    <p class="eyebrow">A letter for you</p>
+    <h2>Open when you are ready</h2>
+    <div class="env" id="env" role="button" tabindex="0" aria-label="Open the envelope">
+      <div class="back"></div><div class="letter"></div><div class="flap"></div><div class="front"></div><div class="seal">&#9825;</div>
+    </div>
+    <p class="note" id="envHint">Tap the seal</p>
+    <div id="letterPaper"></div>
+  </section>
+
+  <!-- SECTION 5: MEMORIES -->
+  <section id="memories">
+    <p class="eyebrow">Our memories</p><h2>Moments I keep</h2>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <!-- SECTION 6: REASONS -->
+  <section id="reasons">
+    <p class="eyebrow">Reasons I love you</p><h2>Just a few of them</h2>
+    <div class="cards" id="cards"></div>
+    <button class="btn" id="reasonBtn">Reveal a reason</button>
+  </section>
+
+  <!-- SECTION 7: SECRET -->
+  <section id="secret">
+    <p class="eyebrow">A secret</p><h2>Only for you</h2>
+    <p class="note">Scratch the surface with your finger or mouse.</p>
+    <div class="scratch"><div class="msg" id="secretMsg"></div><canvas id="scratchCv"></canvas></div>
+    <button class="btn" id="revealBtn">Reveal instead</button>
+  </section>
+
+  <!-- SECTION 8: CAKE -->
+  <section id="cake">
+    <p class="eyebrow">Make a wish</p><h2>Blow out the candles</h2>
+    <p class="note">Click or tap each candle.</p>
+    <div class="cake"><div class="candles" id="candles"></div><div class="tier t2"></div><div class="tier t1"></div></div>
+    <div class="plate"></div>
+    <p id="wish"></p>
+  </section>
+
+  <!-- SECTION 9: FINAL -->
+  <section id="final">
+    <div id="stars" aria-hidden="true"></div>
+    <h1 class="glow reveal" id="finalMsg"></h1>
+    <p class="sig reveal" id="sig"></p>
+  </section>
+</main>
+
+<button class="btn" id="musicBtn">&#9834; Music</button>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const fill = s => String(s).replaceAll("HER_NAME", CONFIG.herName).replaceAll("MY_NAME", CONFIG.myName);
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- text ---------- */
+$("songIntro").textContent = fill(CONFIG.songIntro);
+$("bday").textContent = fill(CONFIG.birthdayMessage);
+$("flowerMsg").textContent = fill(CONFIG.flowersMessage);
+$("secretMsg").textContent = fill(CONFIG.secretMessage);
+$("finalMsg").textContent = fill(CONFIG.finalMessage);
+$("sig").textContent = "Forever yours, " + CONFIG.myName;
+$("audio").src = CONFIG.audioFile; $("track").textContent = CONFIG.trackTitle;
+document.title = "Happy Birthday, " + CONFIG.herName;
+fill(CONFIG.loveLetter).split(/\n\s*\n/).forEach(t => {
+  const p = document.createElement("p"); p.textContent = t; $("letterPaper").appendChild(p);
+});
+
+/* ---------- falling petals ---------- */
+function petal(){
+  if (calm) return;
+  const p = document.createElement("div"); p.className = "petal";
+  p.style.left = Math.random()*100 + "vw";
+  p.style.setProperty("--dx", (Math.random()*160-80) + "px");
+  p.style.setProperty("--r", (Math.random()*720-360) + "deg");
+  p.style.animationDuration = (9 + Math.random()*8) + "s";
+  p.style.transform = "scale(" + (.6 + Math.random()) + ")";
+  $("petals").appendChild(p);
+  setTimeout(() => p.remove(), 18000);
+}
+setInterval(petal, 900);
+
+/* ---------- 1: song player (your own MP3 file) ---------- */
+const au = $("audio");
+function togglePlay(){
+  if (au.paused) au.play().catch(() => { $("audioNote").textContent = "The song could not play. Check that " + CONFIG.audioFile + " exists and the name matches exactly."; });
+  else au.pause();
+}
+$("playBtn").onclick = togglePlay;
+au.onplay  = () => { $("playBtn").textContent = "Pause"; $("disc").classList.add("spin"); $("musicBtn").textContent = "\u266A Pause"; };
+au.onpause = () => { $("playBtn").textContent = "Resume"; $("disc").classList.remove("spin"); $("musicBtn").textContent = "\u266A Play"; };
+au.onerror = () => { $("audioNote").textContent = "Song file not found: " + CONFIG.audioFile + ". See the instructions to add it."; };
+au.ontimeupdate = () => { if (au.duration) $("barFill").style.width = (au.currentTime / au.duration * 100) + "%"; };
+
+/* ---------- 2: enter ---------- */
+$("enterBtn").onclick = () => {
+  $("world").classList.add("open");
+  $("musicBtn").style.display = "block";
+  setTimeout(() => $("flowers").scrollIntoView({behavior: calm ? "auto" : "smooth"}), 50);
+  watch();
+};
+$("musicBtn").onclick = togglePlay; // floating button pauses/resumes the song
+
+/* scroll reveal */
+function watch(){
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); }), {threshold:.25});
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+}
+
+/* ---------- 3: roses (generated SVG) ---------- */
+(function(){
+  const s = $("roses"); const NS = "http://www.w3.org/2000/svg";
+  const add = (h) => s.insertAdjacentHTML("beforeend", h);
+  add('<defs><radialGradient id="rg" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#e0516c"/><stop offset=".6" stop-color="#9c1d38"/><stop offset="1" stop-color="#4f0716"/></radialGradient>' +
+      '<linearGradient id="lf" x1="0" x2="1"><stop offset="0" stop-color="#1f4a2c"/><stop offset="1" stop-color="#3b7a4a"/></linearGradient></defs>');
+  const roses = [[200,150,62],[115,215,50],[285,215,50],[155,290,40],[245,290,40]];
+  roses.forEach(([x,y,r]) => {
+    add('<path d="M'+x+' '+y+' Q'+(200+(x-200)*.3)+' 340 200 410" stroke="#2a5c38" stroke-width="5" fill="none"/>');
+    add('<path d="M'+(x)+' '+(y+r+20)+' q-40 -10 -50 -40 q40 0 50 40z" fill="url(#lf)" opacity=".9"/>');
+  });
+  roses.forEach(([x,y,r]) => {
+    let g = '<g transform="translate('+x+' '+y+')">';
+    for (let ring = 0; ring < 3; ring++) {
+      const n = 5 - ring, rad = r*(1 - ring*.3);
+      for (let i = 0; i < n; i++) {
+        g += '<ellipse cx="0" cy="'+(-rad*.45)+'" rx="'+(rad*.55)+'" ry="'+(rad*.6)+'" transform="rotate('+(i*360/n + ring*28)+')" fill="url(#rg)" stroke="#3a0511" stroke-opacity=".5" stroke-width="1.2"/>';
+      }
+    }
+    g += '<circle r="'+(r*.2)+'" fill="#7a1228"/><path d="M-'+(r*.12)+' 0a'+(r*.12)+' '+(r*.12)+' 0 1 1 '+(r*.24)+' 0" stroke="#e0516c" fill="none" stroke-width="1.5"/></g>';
+    add(g);
+  });
+})();
+
+/* ---------- 4: envelope ---------- */
+function openEnv(){
+  const e = $("env"); if (e.classList.contains("open")) return;
+  e.classList.add("open"); $("envHint").textContent = "";
+  setTimeout(() => { $("letterPaper").classList.add("show"); $("letterPaper").scrollIntoView({behavior: calm ? "auto" : "smooth", block:"center"}); }, 1400);
+}
+$("env").onclick = openEnv;
+$("env").onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openEnv(); } };
+
+/* ---------- 5: gallery (shows placeholder if image is missing) ---------- */
+CONFIG.photos.forEach(ph => {
+  const f = document.createElement("figure"); f.className = "photo reveal";
+  const d = document.createElement("div"); d.className = "img";
+  const url = "images/" + ph.file;
+  const probe = new Image();
+  probe.onload = () => { d.style.backgroundImage = 'url("' + url + '")'; d.textContent = ""; };
+  probe.onerror = () => { d.textContent = "Add your photo: images/" + ph.file; };
+  probe.src = url;
+  const c = document.createElement("p"); c.textContent = fill(ph.caption);
+  f.append(d, c); $("gallery").appendChild(f);
+});
+
+/* ---------- 6: reasons ---------- */
+let ri = 0;
+$("reasonBtn").onclick = () => {
+  if (ri >= CONFIG.reasons.length) return;
+  const c = document.createElement("div"); c.className = "card";
+  const b = document.createElement("b"); b.textContent = String(ri+1).padStart(2,"0");
+  c.append(b, document.createTextNode(fill(CONFIG.reasons[ri])));
+  $("cards").appendChild(c); ri++;
+  if (ri >= CONFIG.reasons.length) $("reasonBtn").style.display = "none"; else $("reasonBtn").textContent = "Another reason";
+};
+
+/* ---------- 7: scratch to reveal ---------- */
+(function(){
+  const cv = $("scratchCv"), ctx = cv.getContext("2d"); let down = false, done = false, n = 0;
+  function size(){
+    if (done) return;
+    const r = cv.getBoundingClientRect(); cv.width = r.width; cv.height = r.height;
+    const g = ctx.createLinearGradient(0,0,r.width,r.height); g.addColorStop(0,"#c9a45c"); g.addColorStop(.5,"#e8d29a"); g.addColorStop(1,"#a8843f");
+    ctx.fillStyle = g; ctx.fillRect(0,0,r.width,r.height);
+    ctx.fillStyle = "rgba(60,20,10,.6)"; ctx.font = "italic 20px Georgia"; ctx.textAlign = "center"; ctx.fillText("Scratch here", r.width/2, r.height/2+6);
+  }
+  function reveal(){ done = true; cv.style.opacity = 0; setTimeout(() => cv.style.display = "none", 1000); $("revealBtn").style.display = "none"; }
+  function scratch(e){
+    if (!down || done) return;
+    const r = cv.getBoundingClientRect();
+    ctx.globalCompositeOperation = "destination-out"; ctx.beginPath();
+    ctx.arc(e.clientX-r.left, e.clientY-r.top, 22, 0, 7); ctx.fill();
+    if (++n % 15 === 0) {
+      const d = ctx.getImageData(0,0,cv.width,cv.height).data; let clear = 0;
+      for (let i = 3; i < d.length; i += 160) if (d[i] === 0) clear++;
+      if (clear / (d.length/160) > .5) reveal();
+    }
+  }
+  cv.addEventListener("pointerdown", e => { down = true; cv.setPointerCapture(e.pointerId); scratch(e); });
+  cv.addEventListener("pointermove", scratch);
+  cv.addEventListener("pointerup", () => down = false);
+  $("revealBtn").onclick = reveal;
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { size(); o.disconnect(); } }).observe(cv);
+})();
+
+/* ---------- 8: cake ---------- */
+let lit = 5;
+for (let i = 0; i < 5; i++) {
+  const c = document.createElement("button"); c.className = "candle"; c.setAttribute("aria-label", "Blow out candle " + (i+1));
+  c.innerHTML = '<span class="flame"></span>';
+  c.onclick = () => {
+    if (c.classList.contains("out")) return;
+    c.classList.add("out");
+    if (--lit === 0) celebrate();
+  };
+  $("candles").appendChild(c);
+}
+function celebrate(){
+  $("wish").textContent = fill(CONFIG.cakeWish); $("wish").classList.add("show");
+  if (calm) return;
+  for (let i = 0; i < 70; i++) setTimeout(petal, i * 40);
+}
+
+/* ---------- 9: stars ---------- */
+for (let i = 0; i < 70; i++) {
+  const s = document.createElement("span"); s.className = "star";
+  s.style.left = Math.random()*100 + "%"; s.style.top = Math.random()*100 + "%";
+  s.style.animationDelay = Math.random()*3 + "s"; $("stars").appendChild(s);
+}
+</script>
+</body>
+</html>
